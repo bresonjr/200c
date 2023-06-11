@@ -7,6 +7,7 @@ def clientthread(client_socket, client_address):
 
     while True:
         # Your server logic here
+        pass
 
     client_socket.close()
     nicknames.remove(nickname)
