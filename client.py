@@ -1,25 +1,17 @@
+from tkinter import *
 import socket
 from threading import Thread
-from tkinter import *
-
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
- 
-ip_address = '127.0.0.1'
-port = 8000
-
-client.connect((ip_address, port))
-
-print("Connected with the server...")
-
 
 class GUI:
     def __init__(self):
         self.Window = Tk()
         self.Window.withdraw()
+
         self.login = Toplevel()
         self.login.title("Login")
         self.login.resizable(width=False, height=False)
         self.login.configure(width=400, height=300)
+
         self.pls = Label(
             self.login,
             text="Please login to continue",
@@ -27,11 +19,14 @@ class GUI:
             font="Helvetica 14 bold"
         )
         self.pls.place(relheight=0.15, relx=0.2, rely=0.07)
+
         self.labelname = Label(self.login, text="Name: ", font="Helvetica 12")
         self.labelname.place(relheight=0.2, relx=0.1, rely=0.2)
+
         self.entryname = Entry(self.login, font="Helvetica 14")
         self.entryname.place(relwidth=0.4, relheight=0.12, relx=0.35, rely=0.2)
         self.entryname.focus()
+
         self.go = Button(
             self.login,
             text="CONTINUE",
@@ -39,6 +34,7 @@ class GUI:
             command=lambda: self.goAhead(self.entryname.get())
         )
         self.go.place(relx=0.4, rely=0.55)
+
         self.Window.mainloop()
 
     def goAhead(self, name):
@@ -48,6 +44,13 @@ class GUI:
         recv.start()
 
     def receive(self):
+        ip_address = '127.0.0.1'  # Replace with the server IP address
+        port = 8000  # Replace with the server port number
+
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.connect((ip_address, port))
+        print("Connected with the server...")
+
         while True:
             try:
                 message = client.recv(2048).decode('utf-8')
@@ -59,6 +62,5 @@ class GUI:
                 print("An error occurred!")
                 client.close()
                 break
-
 
 g = GUI()
